@@ -5,6 +5,7 @@ import {userRouter} from "./routes/user.routes.js";
 import {blogRouter} from "./routes/blog.routes.js";
 import { userBlogRouter } from "./routes/userblog.routes.js";
 import { verifyToken } from "./middleware/middelwares.js";
+import cors from 'cors'
 
 
  export const app = express();
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 connectToMongoDB();
 
+app.use(cors())
 app.use(express.json());
 app.use('/user', userRouter);
 app.use('/myblog', verifyToken, userBlogRouter);
