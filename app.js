@@ -1,6 +1,7 @@
 import express from "express";
 import 'dotenv/config'
 import {connectToMongoDB} from "./db.js";
+import bodyParser from "body-parser";
 import {userRouter} from "./routes/user.routes.js";
 import {blogRouter} from "./routes/blog.routes.js";
 import { userBlogRouter } from "./routes/userblog.routes.js";
@@ -14,7 +15,7 @@ const port = process.env.PORT || 3000;
 connectToMongoDB();
 
 app.use(cors())
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/user', userRouter);
 app.use('/myblog', verifyToken, userBlogRouter);
 app.use('/blog', blogRouter);
