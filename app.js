@@ -15,7 +15,8 @@ const port = process.env.PORT || 3000;
 connectToMongoDB();
 
 app.use(cors())
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/user', userRouter);
 app.use('/myblog', verifyToken, userBlogRouter);
 app.use('/blog', blogRouter);
