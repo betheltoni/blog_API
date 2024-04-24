@@ -5,24 +5,30 @@ import "dotenv/config";
 export const signup = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
+    
     // hash the password
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     // check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
-    const user = await User.create({
-      first_name,
-      last_name,
-      email,
-      password: hashedPassword,
-    });
-    res.status(201).json({
-      message: "User created successfully",
-      user,
-    });
+    if (req.body) {
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const user = await User.create({
+        first_name,
+        last_name,
+        email,
+        password: hashedPassword,
+      });
+      res.status(201).json({
+        message: "User created successfully",
+        user,
+      });
+    } else {
+      res.status(400).json({ message: "Please enter user data"});
+    }
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "Internal server error" });
