@@ -40,3 +40,63 @@ export const getMyBlogs = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// get my blog by id
+export const getMyBlogById = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id).populate("author");
+    res.status(200).json({
+      message: "My blog fetched successfully",
+      blog,
+    });
+  } catch (error) {
+    console.error("Error getting my blog:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// delete my blog
+export const deleteMyBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      message: "My blog deleted successfully",
+      blog,
+    });
+  } catch (error) {
+    console.error("Error deleting my blog:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// update my blog
+export const updateMyBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      message: "My blog updated successfully",
+      blog,
+    });
+  } catch (error) {
+    console.error("Error updating my blog:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// publish my blog
+export const publishMyBlog = async (req, res) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(req.params.id, {
+      state: "published",
+    });
+    res.status(200).json({
+      message: "My blog published successfully",
+      blog,
+    });
+  } catch (error) {
+    console.error("Error publishing my blog:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
