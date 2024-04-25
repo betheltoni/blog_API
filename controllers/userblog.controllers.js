@@ -44,6 +44,8 @@ export const getMyBlogs = async (req, res) => {
 // get my blog by id
 export const getMyBlogById = async (req, res) => {
   try {
+    // anytime the blog is requested the read_count should be incremented by 1
+    await Blog.findByIdAndUpdate(req.params.id, {$inc: {read_count: 1}}, {new: true});
     const blog = await Blog.findById(req.params.id).populate("author");
     res.status(200).json({
       message: "My blog fetched successfully",
